@@ -48,6 +48,8 @@ namespace ImageServiceWeb.Controllers
         [HttpGet]
         public ActionResult DeleteView(string item)
         {
+            // that's the only way to send a string as parameter
+            // (or create a class holding a string)
             return View("DeleteView", "_Layout", item);
         }
 

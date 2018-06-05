@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Web;
+using System.Xml;
 
 namespace ImageServiceWeb.Communication
 {
@@ -43,12 +44,7 @@ namespace ImageServiceWeb.Communication
         public int connectToService()
         {
             // create TCP connection
-            /*string IP = ConfigurationManager.AppSettings["IP"];
-            int port;
-            if (!Int32.TryParse(ConfigurationManager.AppSettings["port"], out port))
-                port = 8080;*/
-            string IP = "127.0.0.1";
-            int port = 8080;
+            getIpPort(out string IP, out int port);
             IPEndPoint ep = new IPEndPoint(IPAddress.Parse(IP), port);
             client = new TcpClient();
             try
@@ -70,6 +66,30 @@ namespace ImageServiceWeb.Communication
             });
             task.Start();
             return 0;
+        }
+
+        public void getIpPort(out string IP, out int port)
+        {
+            IP = "";
+            port = 0;
+            XmlReader reader = XmlReader.Create(System.Web.Hosting.HostingEnvironment.MapPath(@"~/App_Data/TcpConnection.xml"));
+            while (reader.Read())
+            {
+                if (reader.IsStartElement())
+                {
+                    switch (reader.Name.ToString())
+                    {
+                        case "IP":
+                            IP = reader.ReadString();
+                            break;
+                        case "port":
+                            if (!Int32.TryParse(reader.ReadString(), out port))
+                                port = 8080;
+                            break;                        
+                    }
+                }
+            }
+            reader.Close();
         }
 
         /// <summary>
