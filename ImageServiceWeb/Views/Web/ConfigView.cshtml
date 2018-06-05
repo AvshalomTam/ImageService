@@ -1,0 +1,52 @@
+﻿@model ImageServiceWeb.Models.Config
+
+@{
+    ViewBag.Title = "Configuration";
+}
+
+<h2>Cofiguration</h2>
+
+<table class="table">
+    <tr>
+        <td width="150">
+            <b>@Html.DisplayNameFor(model => model.OutputDir)</b>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => Model.OutputDir)
+        </td>
+    </tr>
+    <tr>
+        <td width="150">
+            <b>@Html.DisplayNameFor(model => model.SrcName)</b>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => Model.SrcName)
+        </td>
+    </tr>
+    <tr>
+        <td width="150">
+            <b>@Html.DisplayNameFor(model => model.LogName)</b>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => Model.LogName)
+        </td>
+    </tr>
+    <tr>
+        <td width="150">
+            <b>@Html.DisplayNameFor(model => model.ThumbnailSize)</b>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => Model.ThumbnailSize)
+        </td>
+    </tr>
+</table>
+
+<h3>Handlers</h3>
+<ul>
+    @foreach (var item in Model.Handlers)
+    {
+        <li>
+            @Html.DisplayFor(modelItem => item)
+        </li>
+    }
+</ul>

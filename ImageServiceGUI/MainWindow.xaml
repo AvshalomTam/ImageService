@@ -1,0 +1,24 @@
+﻿<Window x:Class="ImageServiceGUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ImageServiceGUI"
+        mc:Ignorable="d"
+        xmlns:Views="clr-namespace:ImageServiceGUI.Views"
+        Title="ImageService" Height="350" Width="525" x:Name="window" Background="{Binding Background}">
+    <StackPanel>
+        <TabControl Margin="5">
+            <TabItem Header="Settings" x:Name="settingsView">
+                <StackPanel x:Name="settingStack">
+                    <ItemsControl ItemsSource="{Binding Settings}"/>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Logs" x:Name="logView">
+                <StackPanel x:Name="logStack">
+                    <ItemsControl ItemsSource="{Binding Logs}"/>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+    </StackPanel>
+</Window>

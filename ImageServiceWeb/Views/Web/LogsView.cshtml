@@ -1,0 +1,38 @@
+﻿@model IEnumerable<ImageServiceWeb.Models.Logs>
+
+@{
+    ViewBag.Title = "Logs";
+}
+
+<h2>Logs</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <input type="text" name="type" size="5" />
+    <input type="submit" value="filter" class="btn btn-default">
+}
+
+<table class="table">
+    <tr>
+        <th width="40">
+            @Html.DisplayNameFor(model => model.Type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Log)
+        </th>
+    </tr>
+
+    @foreach (var item in Model.Reverse())
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Log)
+            </td>
+        </tr>
+    }
+</table>

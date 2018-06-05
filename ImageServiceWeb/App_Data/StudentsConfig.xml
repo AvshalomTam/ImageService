@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Students>
+  <student>
+    <FirstName>Steve</FirstName>
+    <LastName>Gutfreund</LastName>
+    <ID>EM168887</ID>
+    <Group>03</Group>
+  </student>
+  <student>
+    <FirstName>Avshalom</FirstName>
+    <LastName>Tam</LastName>
+    <ID>203829478</ID>
+    <Group>03</Group>
+  </student>
+</Students>

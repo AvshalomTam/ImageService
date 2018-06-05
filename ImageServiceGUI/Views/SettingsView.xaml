@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="ImageServiceGUI.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ImageServiceGUI.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <StackPanel>
+        <TextBlock Text="Settings" Style="{StaticResource fancyTitle}"/>
+
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Output Directory:" Style="{StaticResource settings}" Margin="3" Width="110"/>
+            <TextBlock Text="{Binding OutputDir}" Margin="3" VerticalAlignment="Center"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Source Name:" Style="{StaticResource settings}" Margin="3" Width="110"/>
+            <TextBlock Text="{Binding SrcName}" Margin="3" VerticalAlignment="Center"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Log Name:" Style="{StaticResource settings}" Margin="3" Width="110"/>
+            <TextBlock Text="{Binding LogName}" Margin="3" VerticalAlignment="Center"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Thumbnail Size:" Style="{StaticResource settings}" Margin="3" Width="110"/>
+            <TextBlock Text="{Binding ThumbSize}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <Button Content="Remove" HorizontalAlignment="Stretch" Margin="3,3,3,0" Command="{Binding RemoveCommand}"/>
+        <ListBox Margin="3,0,3,3" ItemsSource="{Binding List}" SelectedItem="{Binding Selected}"/>
+    </StackPanel>
+</UserControl>
