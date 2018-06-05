@@ -40,5 +40,10 @@ namespace ImageServiceWeb.Models
                 command.Execute(commandArgs);
             }
         }
+
+        public void RemoveHandler(string handler)
+        {
+            CommunicationSingleton.Instance.writeToService(new CommandMessage((int)CommandEnum.CloseCommand, handler).toJson());
+        }
     }
 }
