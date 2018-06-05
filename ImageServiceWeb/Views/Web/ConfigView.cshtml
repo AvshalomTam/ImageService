@@ -42,11 +42,10 @@
 </table>
 
 <h3>Handlers</h3>
-<ul>
-    @foreach (var item in Model.Handlers)
-    {
-        <li>
-            @Html.DisplayFor(modelItem => item)
-        </li>
-    }
-</ul>
+
+@foreach (var item in Model.Handlers)
+{
+    <div>
+        <input type="button" value=@Html.DisplayFor(modelItem => item) />
+    </div>
+}
