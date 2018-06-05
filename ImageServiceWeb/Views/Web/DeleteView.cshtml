@@ -4,18 +4,24 @@
     ViewBag.Title = "Delete Handler";
 }
 
-
 <h2>Are you sure you want to delete:</h2>
-<h4 type="text" name="handler" style="margin-left: 40px">@Model</h4>
+<input type="text" id="handler" style="margin-left: 40px" value=@Model width="200" />
 
 <form>
     <input id="okBtn" type="button" onclick="myFunction()" style="background-color:red" value="OK" />
     <input id="cancelBtn" formaction="ConfigView" type="submit" value="cancel" />
-
-    <script>
-        function myFunction() {
-            document.getElementById("cancelBtn").disabled = true;
-            document.getElementById("okBtn").disabled = true;
-        }
-    </script>
+    <ul id="lstProducts"></ul>
 </form>
+
+<script>
+    $("#okBtn").click(function () {
+        document.getElementById("okBtn").disabled = true;
+        document.getElementById("cancelBtn").disabled = true;
+        var input = {
+            name: $("#handler").val()
+        };
+        $.post("@Url.Action("RemoveHandler")", input, function (data) {
+            $("#lstProducts").append("<li>" + data.result + "</li>");
+        }, "json");
+    });
+</script>

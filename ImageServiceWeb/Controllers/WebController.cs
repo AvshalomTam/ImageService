@@ -1,5 +1,6 @@
 ﻿using ImageServiceWeb.Communication;
 using ImageServiceWeb.Models;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +52,15 @@ namespace ImageServiceWeb.Controllers
             // that's the only way to send a string as parameter
             // (or create a class holding a string)
             return View("DeleteView", "_Layout", item);
+        }
+
+        [HttpPost]
+        public JObject RemoveHandler(string name)
+        {
+            c_model.RemoveHandler(name);
+            JObject data = new JObject();
+            data["result"] = "Request to close " + name + " has been sent";            
+            return data;            
         }
 
         // GET: First/Create
