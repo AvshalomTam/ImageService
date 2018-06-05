@@ -39,6 +39,18 @@ namespace ImageServiceWeb.Controllers
             return View(c_model.configuration);
         }
 
+        [HttpPost]
+        public ActionResult ConfigView(string item)
+        {
+            return RedirectToAction("DeleteView", new { item = item });
+        }
+
+        [HttpGet]
+        public ActionResult DeleteView(string item)
+        {
+            return View("DeleteView", "_Layout", item);
+        }
+
         // GET: First/Create
         public ActionResult PhotosView()
         {

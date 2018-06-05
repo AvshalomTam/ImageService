@@ -175,6 +175,7 @@
     <Content Include="scripts\jquery-1.10.2.min.map" />
     <Content Include="scripts\jquery-3.0.0.min.map" />
     <Content Include="scripts\jquery-3.0.0.slim.min.map" />
+    <Content Include="Views\Web\DeleteView.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

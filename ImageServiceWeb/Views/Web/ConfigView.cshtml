@@ -43,9 +43,14 @@
 
 <h3>Handlers</h3>
 
-@foreach (var item in Model.Handlers)
-{
-    <div>
-        <input type="button" value=@Html.DisplayFor(modelItem => item) />
-    </div>
-}
+<div class="btn-group" style="display:block">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+            foreach (var item in Model.Handlers)
+            {
+                <input type="submit" style="background-color:white;border:hidden;width:800px;display:block"
+                       name="item" value=@Html.DisplayFor(modelItem => item) />
+            }
+    }
+</div>
