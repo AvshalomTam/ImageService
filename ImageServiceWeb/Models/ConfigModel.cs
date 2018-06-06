@@ -15,9 +15,12 @@ namespace ImageServiceWeb.Models
     {
         public Config configuration { get; set; }
         public Dictionary<int, IServiceCommands> commandDictionary;
-        
+        private Thread waitingThread;
+        private bool requestedRemove;
+
         public ConfigModel()
         {
+            this.requestedRemove = false;
             this.configuration = new Config();
             this.commandDictionary = new Dictionary<int, IServiceCommands>()
             {
@@ -40,13 +43,26 @@ namespace ImageServiceWeb.Models
             if (commandDictionary.TryGetValue(commandID, out IServiceCommands command))
             {
                 command.Execute(commandArgs);
-            }            
+            }
+
+            if (commandID == (int)CommandEnum.CloseCommand && this.requestedRemove)
+            {
+                this.waitingThread.Interrupt();
+                this.requestedRemove = false;
+            }                
         }
 
         public void RemoveHandler(string handler)
         {
             CommunicationSingleton.Instance.writeToService(new CommandMessage((int)CommandEnum.CloseCommand, handler).toJson());
-            Thread.Sleep(5000);
+            this.waitingThread = Thread.CurrentThread;
+            this.requestedRemove = true;
+            try
+            {
+                Thread.Sleep(-1);
+            }
+            catch { }
+            
         }
     }
 }
