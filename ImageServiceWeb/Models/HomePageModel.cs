@@ -27,7 +27,14 @@ namespace ImageServiceWeb.Models
         {
             get
             {
-                return Directory.GetFiles(this.configuration.OutputDir, "*.*", SearchOption.AllDirectories).Length / 2;
+                try
+                {
+                    return Directory.GetFiles(this.configuration.OutputDir, "*.*", SearchOption.AllDirectories).Length / 2;
+                }
+                catch
+                {
+                    return 0;
+                }
             }            
         }
 

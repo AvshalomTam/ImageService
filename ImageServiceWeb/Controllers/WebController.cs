@@ -3,6 +3,7 @@ using ImageServiceWeb.Models;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Web;
@@ -71,7 +72,22 @@ namespace ImageServiceWeb.Controllers
         // GET: First/Create
         public ActionResult PhotosView()
         {
-            return View();
+            try
+            {
+                string[] pics = Directory.GetFiles(c_model.configuration.OutputDir + @"\Thumbnails", "*.*", SearchOption.AllDirectories);
+                string[] seperator = new string[] { "output" };
+                for (int i = 0; i < pics.Length; i++)
+                {
+                    pics[i] = pics[i].Split(seperator, StringSplitOptions.None)[1];
+                    pics[i] = @"..\output" + pics[i];
+                }
+                return View(pics);
+            }
+            catch
+            {
+                return View(new string[0]);
+            }
+            
         }
 
         // POST: First/Create
