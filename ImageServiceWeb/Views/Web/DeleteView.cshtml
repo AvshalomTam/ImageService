@@ -9,8 +9,8 @@
 <input type="text" id="handler" value=@Model hidden="hidden" />
 
 <form id="myform" method="post">
-    <input id="okBtn" type="button" onclick="myFunction()" style="background-color:red" value="OK" />
-    <input id="cancelBtn" type="submit" value="cancel" />
+    <input id="okBtn" type="button" style="background-color:red" value="OK" />
+    <input id="cancelBtn" formaction="ConfigView" formmethod="get" type="submit" value="cancel" />
     <ul id="lstProducts"></ul>
 </form>
 
@@ -21,7 +21,7 @@
         var input = {
             name: $("#handler").val()
         };
-        $.post("@Url.Action("RemoveHandler")", input, function (data, status) {            
+        $.post("@Url.Action("RemoveHandler")", input, function (data) {            
             document.forms["myform"].submit();
         });        
     });

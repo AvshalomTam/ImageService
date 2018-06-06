@@ -71,6 +71,7 @@
     <Compile Include="Infrastructure\Enums\CommandEnum.cs" />
     <Compile Include="Infrastructure\LogUpdater.cs" />
     <Compile Include="Infrastructure\SettingsUpdater.cs" />
+    <Compile Include="Infrastructure\StatusUpdater.cs" />
     <Compile Include="Infrastructure\TransferEventArgs.cs" />
     <Compile Include="Logging\ILoggingService.cs" />
     <Compile Include="Logging\LogArchive.cs" />

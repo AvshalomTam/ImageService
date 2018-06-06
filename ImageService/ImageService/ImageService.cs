@@ -54,6 +54,7 @@ namespace ImageService.ImageService
         private ILoggingService logger;
         private TcpServer tcpServer;
         private IClientHandler handler;
+        private StatusUpdater s_updater;
 
         public ImageService()
         {
@@ -99,7 +100,7 @@ namespace ImageService.ImageService
             logger.MessageReceived += archive.OnLog;
             #endregion
 
-            logger.Log("Service started", MessageTypeEnum.INFO);
+            logger.Log("Service started", MessageTypeEnum.INFO);                     
 
             #region creating the ImageModal
             IImageServiceModal modal = new ImageServiceModal(manager.OutputDirectory, manager.ThumbnailSize);
@@ -115,10 +116,15 @@ namespace ImageService.ImageService
             m_server.RemoveHandler += manager.OnHandlerRemove;
             #endregion
 
+            #region creating the class who notifies clients about a change in the status
+            s_updater = new StatusUpdater();
+            #endregion
+
             #region creating dictionary of commands and giving them to ClientHandler
             Dictionary<int, IHandlerCommand> commands = new Dictionary<int, IHandlerCommand>();
             commands[(int)CommandEnum.LogCommand] = new DataCommand(archive);
             commands[(int)CommandEnum.ConfigCommand] = new DataCommand(manager);
+            commands[(int)CommandEnum.StatusCommand] = new DataCommand(s_updater);
             commands[(int)CommandEnum.CloseCommand] = new RemoveHandlerCommand(m_server);
             this.handler = new ClientHandler(commands);
             #endregion
@@ -127,9 +133,9 @@ namespace ImageService.ImageService
             LogUpdater l_updater = new LogUpdater();
             logger.MessageReceived += l_updater.OnLog;
             l_updater.logUpdate += handler.Broadcast;
-            SettingsUpdater s_updater = new SettingsUpdater();
-            m_server.RemoveHandler += s_updater.OnHandlerRemoved;
-            s_updater.settingsUpdate += handler.Broadcast;
+            SettingsUpdater c_updater = new SettingsUpdater();
+            m_server.RemoveHandler += c_updater.OnHandlerRemoved;
+            c_updater.settingsUpdate += handler.Broadcast;
             #endregion
 
             #region creating the TCP server
@@ -137,12 +143,17 @@ namespace ImageService.ImageService
             // starting to wait for client connections
             tcpServer.Start();
             #endregion
+
+            s_updater.statusUpdate += handler.Broadcast;
+            
+            s_updater.OnStatus("Service started");   
         }
 
         protected override void OnPause()
         {
             logger.Log("Service paused", MessageTypeEnum.INFO);
-            
+            s_updater.OnStatus("Service paused");
+
             // Update the service state to Pause Pending.  
             ServiceStatus serviceStatus = new ServiceStatus();
             serviceStatus.dwCurrentState = ServiceState.SERVICE_PAUSE_PENDING;
@@ -157,7 +168,8 @@ namespace ImageService.ImageService
         protected override void OnContinue()
         {
             logger.Log("Service continued", MessageTypeEnum.INFO);
-            
+            s_updater.OnStatus("Service continued");
+
             // Update the service state to Continue Pending.  
             ServiceStatus serviceStatus = new ServiceStatus();
             serviceStatus.dwCurrentState = ServiceState.SERVICE_CONTINUE_PENDING;
@@ -169,6 +181,7 @@ namespace ImageService.ImageService
         {
             m_server.ServerClose();
             logger.Log("Service stopped", MessageTypeEnum.INFO);
+            s_updater.OnStatus("Service stopped");
             this.handler.CloseClients();
 
             // Update the service state to Stop Pending.  

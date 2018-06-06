@@ -11,6 +11,7 @@ namespace ImageServiceWeb.Enums
         NewFileCommand,
         ConfigCommand,
         LogCommand,
-        CloseCommand
+        CloseCommand,
+        StatusCommand
     }
 }

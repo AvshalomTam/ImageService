@@ -145,6 +145,7 @@
     <Compile Include="Commands\ConfigCommand.cs" />
     <Compile Include="Commands\IServiceCommands.cs" />
     <Compile Include="Commands\LogCommand.cs" />
+    <Compile Include="Commands\StatusCommand.cs" />
     <Compile Include="Communication\CommunicationSingleton.cs" />
     <Compile Include="Communication\MessageEventArgs.cs" />
     <Compile Include="Controllers\WebController.cs" />
@@ -154,6 +155,7 @@
     </Compile>
     <Compile Include="Models\Config.cs" />
     <Compile Include="Models\ConfigModel.cs" />
+    <Compile Include="Models\HomePageModel.cs" />
     <Compile Include="Models\LogModel.cs" />
     <Compile Include="Models\Logs.cs" />
     <Compile Include="Models\RemoveHandlerArgs.cs" />

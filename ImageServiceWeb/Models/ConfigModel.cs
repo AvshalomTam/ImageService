@@ -16,11 +16,10 @@ namespace ImageServiceWeb.Models
         public Config configuration { get; set; }
         public Dictionary<int, IServiceCommands> commandDictionary;
         private Thread waitingThread;
-        private bool requestedRemove;
-
+        
         public ConfigModel()
         {
-            this.requestedRemove = false;
+            this.waitingThread = Thread.CurrentThread;
             this.configuration = new Config();
             this.commandDictionary = new Dictionary<int, IServiceCommands>()
             {
@@ -45,18 +44,16 @@ namespace ImageServiceWeb.Models
                 command.Execute(commandArgs);
             }
 
-            if (commandID == (int)CommandEnum.CloseCommand && this.requestedRemove)
+            if (commandID == (int)CommandEnum.CloseCommand)
             {
-                this.waitingThread.Interrupt();
-                this.requestedRemove = false;
-            }                
+                this.waitingThread.Interrupt();                
+            }
         }
 
         public void RemoveHandler(string handler)
         {
             CommunicationSingleton.Instance.writeToService(new CommandMessage((int)CommandEnum.CloseCommand, handler).toJson());
             this.waitingThread = Thread.CurrentThread;
-            this.requestedRemove = true;
             try
             {
                 Thread.Sleep(-1);

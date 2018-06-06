@@ -12,14 +12,17 @@ namespace ImageServiceWeb.Controllers
 {
     public class WebController : Controller
     {
-        static List<Student> students = StudentModel.GetStudentList(@"App_Data/StudentsConfig.xml");
+        static HomePageModel h_model = new HomePageModel();
         static LogModel l_model = new LogModel();
         static ConfigModel c_model = new ConfigModel();
 
         [HttpGet]
         public ActionResult HomePage()
         {
-            return View(students);
+            ViewBag.status = h_model.status;
+            ViewBag.numOfPics = h_model.numOfPics;
+
+            return View(h_model.students);
         }
 
         [HttpGet]
@@ -38,13 +41,6 @@ namespace ImageServiceWeb.Controllers
         public ActionResult ConfigView()
         {
             return View(c_model.configuration);
-        }
-
-        [HttpGet]
-        public ActionResult HandlerRemoved()
-        {
-            Response.Redirect(Url.Action("ConfigView"), true);
-            return RedirectToAction("ConfigView");
         }
 
         [HttpPost]
