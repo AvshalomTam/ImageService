@@ -5,7 +5,9 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web;
+using System.Web.Mvc;
 
 namespace ImageServiceWeb.Models
 {
@@ -13,7 +15,7 @@ namespace ImageServiceWeb.Models
     {
         public Config configuration { get; set; }
         public Dictionary<int, IServiceCommands> commandDictionary;
-
+        
         public ConfigModel()
         {
             this.configuration = new Config();
@@ -38,12 +40,13 @@ namespace ImageServiceWeb.Models
             if (commandDictionary.TryGetValue(commandID, out IServiceCommands command))
             {
                 command.Execute(commandArgs);
-            }
+            }            
         }
 
         public void RemoveHandler(string handler)
         {
             CommunicationSingleton.Instance.writeToService(new CommandMessage((int)CommandEnum.CloseCommand, handler).toJson());
+            Thread.Sleep(5000);
         }
     }
 }

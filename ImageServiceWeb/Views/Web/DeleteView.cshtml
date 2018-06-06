@@ -8,9 +8,9 @@
 <h4 style="margin-left:40px">@Model</h4>
 <input type="text" id="handler" value=@Model hidden="hidden" />
 
-<form>
+<form id="myform" method="post">
     <input id="okBtn" type="button" onclick="myFunction()" style="background-color:red" value="OK" />
-    <input id="cancelBtn" formaction="ConfigView" type="submit" value="cancel" />
+    <input id="cancelBtn" type="submit" value="cancel" />
     <ul id="lstProducts"></ul>
 </form>
 
@@ -21,8 +21,8 @@
         var input = {
             name: $("#handler").val()
         };
-        $.post("@Url.Action("RemoveHandler")", input, function (data) {
-            $("#lstProducts").append("<li>" + data.result + "</li>");
-        }, "json");
+        $.post("@Url.Action("RemoveHandler")", input, function (data, status) {            
+            document.forms["myform"].submit();
+        });        
     });
 </script>

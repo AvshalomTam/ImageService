@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 
@@ -12,7 +13,6 @@ namespace ImageServiceWeb.Controllers
     public class WebController : Controller
     {
         static List<Student> students = StudentModel.GetStudentList(@"App_Data/StudentsConfig.xml");
-
         static LogModel l_model = new LogModel();
         static ConfigModel c_model = new ConfigModel();
 
@@ -40,6 +40,13 @@ namespace ImageServiceWeb.Controllers
             return View(c_model.configuration);
         }
 
+        [HttpGet]
+        public ActionResult HandlerRemoved()
+        {
+            Response.Redirect(Url.Action("ConfigView"), true);
+            return RedirectToAction("ConfigView");
+        }
+
         [HttpPost]
         public ActionResult ConfigView(string item)
         {
@@ -55,12 +62,15 @@ namespace ImageServiceWeb.Controllers
         }
 
         [HttpPost]
-        public JObject RemoveHandler(string name)
+        public ActionResult DeleteView()
         {
-            c_model.RemoveHandler(name);
-            JObject data = new JObject();
-            data["result"] = "Request to close " + name + " has been sent";            
-            return data;            
+            return RedirectToAction("ConfigView");
+        }
+
+        [HttpPost]
+        public void RemoveHandler(string name)
+        {
+            c_model.RemoveHandler(name);                       
         }
 
         // GET: First/Create

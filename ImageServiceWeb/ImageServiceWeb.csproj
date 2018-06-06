@@ -156,6 +156,7 @@
     <Compile Include="Models\ConfigModel.cs" />
     <Compile Include="Models\LogModel.cs" />
     <Compile Include="Models\Logs.cs" />
+    <Compile Include="Models\RemoveHandlerArgs.cs" />
     <Compile Include="Models\Student.cs" />
     <Compile Include="Models\StudentModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
