@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Web;
 
@@ -12,6 +13,8 @@ namespace ImageServiceWeb.Models
 {
     public class HomePageModel
     {
+        private Config configuration;
+
         [Required]
         [DataType(DataType.Text)]
         [Display(Name = "Status")]
@@ -20,15 +23,22 @@ namespace ImageServiceWeb.Models
         [Required]
         [DataType(DataType.Text)]
         [Display(Name = "Num of pics")]
-        public int numOfPics { get; set; }
+        public int numOfPics
+        {
+            get
+            {
+                return Directory.GetFiles(this.configuration.OutputDir, "*.*", SearchOption.AllDirectories).Length / 2;
+            }            
+        }
 
         public Dictionary<int, IServiceCommands> commandDictionary;
         public List<Student> students { get; set; }
 
-        public HomePageModel()
+        public HomePageModel(Config configuration)
         {
+            this.configuration = configuration;
+
             this.students = StudentModel.GetStudentList(@"App_Data/StudentsConfig.xml");
-            this.numOfPics = 0;
             this.status = "Waiting for connection...";
 
             // in order to get messages

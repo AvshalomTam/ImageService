@@ -12,9 +12,9 @@ namespace ImageServiceWeb.Controllers
 {
     public class WebController : Controller
     {
-        static HomePageModel h_model = new HomePageModel();
         static LogModel l_model = new LogModel();
         static ConfigModel c_model = new ConfigModel();
+        static HomePageModel h_model = new HomePageModel(c_model.configuration);
 
         [HttpGet]
         public ActionResult HomePage()
