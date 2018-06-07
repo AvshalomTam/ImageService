@@ -21,9 +21,6 @@ namespace ImageServiceWeb.Controllers
         [HttpGet]
         public ActionResult HomePage()
         {
-            ViewBag.status = h_model.status;
-            ViewBag.numOfPics = h_model.numOfPics;
-
             return View(h_model.students);
         }
 
@@ -58,7 +55,7 @@ namespace ImageServiceWeb.Controllers
         [HttpPost]
         public ActionResult ConfigView(string item)
         {
-            return RedirectToAction("RemoveHandlerView", new { item = item });
+            return RedirectToAction("RemoveHandlerView", new { item });
         }
 
         [HttpGet]
