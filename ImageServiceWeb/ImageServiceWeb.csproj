@@ -158,6 +158,8 @@
     <Compile Include="Models\HomePageModel.cs" />
     <Compile Include="Models\LogModel.cs" />
     <Compile Include="Models\Logs.cs" />
+    <Compile Include="Models\Photo.cs" />
+    <Compile Include="Models\PhotosModel.cs" />
     <Compile Include="Models\RemoveHandlerArgs.cs" />
     <Compile Include="Models\Student.cs" />
     <Compile Include="Models\StudentModel.cs" />

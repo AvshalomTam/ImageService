@@ -16,6 +16,7 @@ namespace ImageServiceWeb.Controllers
         static LogModel l_model = new LogModel();
         static ConfigModel c_model = new ConfigModel();
         static HomePageModel h_model = new HomePageModel(c_model.configuration);
+        static PhotosModel p_model = new PhotosModel(c_model.configuration);
 
         [HttpGet]
         public ActionResult HomePage()
@@ -72,22 +73,7 @@ namespace ImageServiceWeb.Controllers
         // GET: First/Create
         public ActionResult PhotosView()
         {
-            try
-            {
-                string[] pics = Directory.GetFiles(c_model.configuration.OutputDir + @"\Thumbnails", "*.*", SearchOption.AllDirectories);
-                string[] seperator = new string[] { "output" };
-                for (int i = 0; i < pics.Length; i++)
-                {
-                    pics[i] = pics[i].Split(seperator, StringSplitOptions.None)[1];
-                    pics[i] = @"..\output" + pics[i];
-                }
-                return View(pics);
-            }
-            catch
-            {
-                return View(new string[0]);
-            }
-            
+            return View(p_model.PhotoList);
         }
 
         // POST: First/Create
