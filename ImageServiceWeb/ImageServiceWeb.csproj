@@ -161,6 +161,7 @@
     <Compile Include="Models\RemoveHandlerArgs.cs" />
     <Compile Include="Models\Student.cs" />
     <Compile Include="Models\StudentModel.cs" />
+    <Compile Include="Models\CommandsExecuter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

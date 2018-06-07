@@ -11,7 +11,7 @@ using System.Web;
 
 namespace ImageServiceWeb.Models
 {
-    public class HomePageModel
+    public class HomePageModel : CommandsExecuter
     {
         private Config configuration;
 
@@ -38,7 +38,6 @@ namespace ImageServiceWeb.Models
             }            
         }
 
-        public Dictionary<int, IServiceCommands> commandDictionary;
         public List<Student> students { get; set; }
 
         public HomePageModel(Config configuration)
@@ -58,18 +57,6 @@ namespace ImageServiceWeb.Models
 
             // get the status of the server
             CommunicationSingleton.Instance.writeToService(new CommandMessage((int)CommandEnum.StatusCommand).toJson());
-        }
-
-        public void OnDataReceived(object sender, MessageEventArgs args)
-        {
-            JObject Jmessage = JObject.Parse(args.Message);
-            int commandID = (int)Jmessage["command"];
-            string commandArgs = (string)Jmessage["arguments"];
-
-            if (commandDictionary.TryGetValue(commandID, out IServiceCommands command))
-            {
-                command.Execute(commandArgs);
-            }
-        }
+        }        
     }
 }

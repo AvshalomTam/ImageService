@@ -9,11 +9,10 @@ using System.Web;
 
 namespace ImageServiceWeb.Models
 {
-    public class LogModel
+    public class LogModel : CommandsExecuter
     {
         private List<Logs> logs;
-        public Dictionary<int, IServiceCommands> commandDictionary;
-
+        
         public LogModel()
         {
             logs = new List<Logs>();
@@ -28,18 +27,6 @@ namespace ImageServiceWeb.Models
 
             // get all the old logs
             CommunicationSingleton.Instance.writeToService(new CommandMessage((int)CommandEnum.LogCommand).toJson());            
-        }
-
-        public void OnDataReceived(object sender, MessageEventArgs args)
-        {
-            JObject Jmessage = JObject.Parse(args.Message);
-            int commandID = (int)Jmessage["command"];
-            string commandArgs = (string)Jmessage["arguments"];
-
-            if (commandDictionary.TryGetValue(commandID, out IServiceCommands command))
-            {
-                command.Execute(commandArgs);
-            }
         }
 
         public List<Logs> getList(string type = "")
