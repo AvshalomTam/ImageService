@@ -6,9 +6,9 @@
 
 <h2>Image Service</h2>
 
-<h4>Status: @ViewBag.status</h4>
+<h4 typeof="text" id="statusId" />
 
-<h4>Number of pics in outputfolder: @ViewBag.numOfPics</h4>
+<h4 type="text" id="numId" />
 
 <h3>Collaborators</h3>
 <table class="table">
@@ -46,3 +46,13 @@
     }
 
 </table>
+
+<script>
+    $.get("@Url.Action("ServiceStatus")", null, function (data) {
+        $("#statusId").text("Service Status: " + data);
+    });
+
+    $.get("@Url.Action("NumberOfPics")", null, function (data) {
+        $("#numId").text("Number of pics in outputfolder: " + data);
+    });
+</script>

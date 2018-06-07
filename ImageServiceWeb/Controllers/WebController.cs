@@ -27,6 +27,16 @@ namespace ImageServiceWeb.Controllers
             return View(h_model.students);
         }
 
+        public string NumberOfPics()
+        {
+            return h_model.numOfPics.ToString();
+        }
+
+        public string ServiceStatus()
+        {
+            return h_model.status;
+        }
+
         [HttpGet]
         public ActionResult LogsView()
         {
