@@ -48,18 +48,18 @@ namespace ImageServiceWeb.Controllers
         [HttpPost]
         public ActionResult ConfigView(string item)
         {
-            return RedirectToAction("DeleteView", new { item = item });
+            return RedirectToAction("RemoveHandlerView", new { item = item });
         }
 
         [HttpGet]
-        public ActionResult DeleteView(string item)
+        public ActionResult RemoveHandlerView(string item)
         {
             ViewBag.handler = item;
             return View();
         }
 
         [HttpPost]
-        public ActionResult DeleteView()
+        public ActionResult RemoveHandlerView()
         {
             return RedirectToAction("ConfigView");
         }
@@ -70,17 +70,22 @@ namespace ImageServiceWeb.Controllers
             c_model.RemoveHandler(name);                       
         }
 
-        // GET: First/Create
+        [HttpGet]
         public ActionResult PhotosView()
         {
             return View(p_model.PhotoList);
         }
 
-        // POST: First/Create
         [HttpPost]
-        public ActionResult PhotosView(string stam)
+        public ActionResult DeletePicView(string path)
         {
-            return View();
+            return View(new Photo(path));
+        }
+
+        [HttpPost]
+        public ActionResult PicView(string path)
+        {
+            return View(new Photo(path));
         }
     }
 }

@@ -1,0 +1,16 @@
+﻿@model ImageServiceWeb.Models.Photo
+
+@{
+    ViewBag.Title = "Image View";
+}
+
+<p></p><p></p>
+<img src="@Model.RelativePath" alt="Cinque Terre">
+<h3>@Model.PicName</h3>
+<h3>Date taken: @Model.DateTaken</h3>
+
+<form method="post">
+    <input type="submit" class="btn btn-default" value="Delete" formaction="DeletePicView"
+           style="background-color:red;color:white" />
+    <input type="text" name="path" value="@Model.t_FullPath" hidden="hidden" />
+</form> 
