@@ -90,9 +90,9 @@ namespace ImageServiceWeb.Controllers
         }
 
         [HttpPost]
-        public void DeletePic(string name)
+        public void DeletePic(string path, string t_path)
         {
-            // remove pic
+            // delete pics
         }
 
         [HttpPost]

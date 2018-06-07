@@ -30,5 +30,10 @@ namespace ImageServiceWeb.Models
         {
             this.configuration = c;
         }
+
+        public void DeletePic(string path)
+        {
+            
+        }
     }
 }

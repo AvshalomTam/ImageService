@@ -19,10 +19,8 @@
     $("#okBtn").click(function () {
         document.getElementById("okBtn").disabled = true;
         document.getElementById("cancelBtn").disabled = true;
-        var input = {
-            name: $("#handler").val()
-        };
-        $.post("@Url.Action("DeletePic")", input, function (data) {
+        
+        $.post("@Url.Action("DeletePic")", null, function (data) {
             document.forms["myform"].submit();
         });
     });
