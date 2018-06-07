@@ -90,6 +90,12 @@ namespace ImageServiceWeb.Controllers
         }
 
         [HttpPost]
+        public void DeletePic(string name)
+        {
+            // remove pic
+        }
+
+        [HttpPost]
         public ActionResult PicView(string path)
         {
             return View(new Photo(path));

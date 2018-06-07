@@ -9,3 +9,21 @@
 <h3>@Model.PicName</h3>
 <h3>Date taken: @Model.DateTaken</h3>
 <h3>Source: @Model.FullPath</h3>
+
+<form id="myform" action="PhotosView">
+    <input id="okBtn" type="button" class="btn btn-primary" style="background-color:red" value="OK" />
+    <input id="cancelBtn" class="btn btn-default" type="submit" value="cancel" />
+</form>
+
+<script>
+    $("#okBtn").click(function () {
+        document.getElementById("okBtn").disabled = true;
+        document.getElementById("cancelBtn").disabled = true;
+        var input = {
+            name: $("#handler").val()
+        };
+        $.post("@Url.Action("DeletePic")", input, function (data) {
+            document.forms["myform"].submit();
+        });
+    });
+</script>
