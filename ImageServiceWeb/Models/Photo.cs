@@ -45,6 +45,9 @@ namespace ImageServiceWeb.Models
         [Display(Name = "Path")]
         public string t_RelativePath { get; set; }
 
+        /**
+         * path: path to thumbnail pic
+         */
         public Photo(string path)
         {
             // full path for the thumbnail

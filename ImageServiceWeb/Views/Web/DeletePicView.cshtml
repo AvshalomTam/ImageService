@@ -5,13 +5,13 @@
 }
 
 <h2>Are you sure you want to delete?</h2>
-<img src="@Model.t_RelativePath" class="img-circle" alt="Cinque Terre">
+<img src="@Model.t_RelativePath" class="img-circle" alt="@Model.PicName">
 <h3>@Model.PicName</h3>
 <h3>Date taken: @Model.DateTaken</h3>
 <h3>Source: @Model.FullPath</h3>
 
 <form id="myform" action="PhotosView">
-    <input id="okBtn" type="button" class="btn btn-primary" style="background-color:red" value="OK" />
+    <input id="okBtn" type="submit" class="btn btn-primary" style="background-color:red" value="OK" />
     <input id="cancelBtn" class="btn btn-default" type="submit" value="cancel" />
 </form>
 
@@ -23,9 +23,7 @@
         var path = @Html.Raw(Json.Encode(Model.RelativePath));
         var t_path = @Html.Raw(Json.Encode(Model.t_RelativePath));
 
-        $.post("@Url.Action("DeletePic")", {
-            path, t_path
-        }, function(data) {
+        $.post("@Url.Action("DeletePic")", { path, t_path }, function(data) {
             document.forms["myform"].submit();
         });
     });
