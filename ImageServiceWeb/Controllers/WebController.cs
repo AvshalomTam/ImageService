@@ -92,7 +92,9 @@ namespace ImageServiceWeb.Controllers
         [HttpPost]
         public void DeletePic(string path, string t_path)
         {
-            // delete pics
+            // delete 2 pics, thumbnail and regular
+            p_model.DeletePic(path);
+            p_model.DeletePic(t_path);
         }
 
         [HttpPost]

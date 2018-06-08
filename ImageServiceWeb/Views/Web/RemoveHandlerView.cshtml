@@ -4,7 +4,6 @@
 
 <h2>Are you sure you want to delete?</h2>
 <h4 style="margin-left:40px">@ViewBag.handler</h4>
-<input type="text" id="handler" value=@ViewBag.handler hidden="hidden" />
 
 <form id="myform" method="post">
     <input id="okBtn" type="button" class="btn btn-primary" style="background-color:red" value="OK" />
@@ -15,11 +14,10 @@
     $("#okBtn").click(function () {
         document.getElementById("okBtn").disabled = true;
         document.getElementById("cancelBtn").disabled = true;
-        var input = {
-            name: $("#handler").val()
-        };
-        $.post("@Url.Action("RemoveHandler")", input, function (data) {            
+
+        var name = @Html.Raw(Json.Encode(ViewBag.handler));        
+        $.post("@Url.Action("RemoveHandler")", { name }, function (data) {
             document.forms["myform"].submit();
-        });        
+        });
     });
 </script>

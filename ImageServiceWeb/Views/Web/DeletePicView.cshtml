@@ -19,8 +19,13 @@
     $("#okBtn").click(function () {
         document.getElementById("okBtn").disabled = true;
         document.getElementById("cancelBtn").disabled = true;
-        
-        $.post("@Url.Action("DeletePic")", null, function (data) {
+
+        var path = @Html.Raw(Json.Encode(Model.RelativePath));
+        var t_path = @Html.Raw(Json.Encode(Model.t_RelativePath));
+
+        $.post("@Url.Action("DeletePic")", {
+            path, t_path
+        }, function(data) {
             document.forms["myform"].submit();
         });
     });

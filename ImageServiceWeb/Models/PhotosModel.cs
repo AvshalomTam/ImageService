@@ -33,7 +33,13 @@ namespace ImageServiceWeb.Models
 
         public void DeletePic(string path)
         {
-            
+            path = "~" + path.Substring(path.IndexOf('\\'));
+
+            var filePath = System.Web.Hosting.HostingEnvironment.MapPath(path);
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
         }
     }
 }
