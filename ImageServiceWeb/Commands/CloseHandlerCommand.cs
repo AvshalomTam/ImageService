@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ImageServiceWeb.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -8,19 +9,17 @@ namespace ImageServiceWeb.Commands
 {
     public class CloseHandlerCommand : IServiceCommands
     {
-        private List<string> handlers;
-        private Thread waitingThread;
+        private ConfigModel m;
 
-        public CloseHandlerCommand(List<string> handlers, Thread t)
+        public CloseHandlerCommand(ConfigModel m)
         {
-            this.handlers = handlers;
-            this.waitingThread = t;
+            this.m = m;
         }
 
         public void Execute(string args)
         {
-            this.handlers.Remove(args);
-            this.waitingThread.Interrupt();
+            this.m.configuration.Handlers.Remove(args);
+            this.m.waitingThread.Interrupt();
         }
     }
 }

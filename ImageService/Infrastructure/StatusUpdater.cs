@@ -22,11 +22,7 @@ namespace ImageService.Infrastructure
         public void OnStatus(string status)
         {
             this.status = status;
-            JObject obj = new JObject();
-            obj["command"] = (int)CommandEnum.StatusCommand;
-            obj["arguments"] = status;
-
-            statusUpdate?.Invoke(this, new TransferEventArgs(obj.ToString()));
+            statusUpdate?.Invoke(this, new TransferEventArgs(ToString()));
         }
 
         public override string ToString()

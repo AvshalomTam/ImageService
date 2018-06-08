@@ -66,12 +66,6 @@ namespace ImageServiceWeb.Controllers
         }
 
         [HttpPost]
-        public ActionResult RemoveHandlerView()
-        {
-            return RedirectToAction("ConfigView");
-        }
-
-        [HttpPost]
         public void RemoveHandler(string name)
         {
             c_model.RemoveHandler(name);                       

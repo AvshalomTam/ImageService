@@ -14,7 +14,7 @@ namespace ImageServiceWeb.Models
     public class ConfigModel : CommandsExecuter
     {
         public Config configuration { get; set; }
-        private Thread waitingThread;
+        public Thread waitingThread;
         
         public ConfigModel()
         {
@@ -23,7 +23,7 @@ namespace ImageServiceWeb.Models
             this.commandDictionary = new Dictionary<int, IServiceCommands>()
             {
                 { (int)CommandEnum.ConfigCommand, new ConfigCommand(this.configuration)},
-                { (int)CommandEnum.CloseCommand, new CloseHandlerCommand(this.configuration.Handlers, this.waitingThread) }
+                { (int)CommandEnum.CloseCommand, new CloseHandlerCommand(this) }
             };
 
             // in order to get messages

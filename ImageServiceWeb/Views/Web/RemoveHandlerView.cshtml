@@ -2,12 +2,12 @@
     ViewBag.Title = "Delete Handler";
 }
 
-<h2>Are you sure you want to delete?</h2>
-<h4 style="margin-left:40px">@ViewBag.handler</h4>
+<h2>Are you sure you want to delete:</h2>
+<h4 style="margin-left:40px">@ViewBag.handler ?</h4>
 
-<form id="myform" method="post">
-    <input id="okBtn" type="button" class="btn btn-primary" style="background-color:red" value="OK" />
-    <input id="cancelBtn" formaction="ConfigView" class="btn btn-default" formmethod="get" type="submit" value="cancel" />
+<form id="myform" method="get" action="ConfigView">
+    <input id="okBtn" type="submit" class="btn btn-primary" style="background-color:red" value="OK" />
+    <input id="cancelBtn" class="btn btn-default" type="submit" value="cancel" />
 </form>
 
 <script>
