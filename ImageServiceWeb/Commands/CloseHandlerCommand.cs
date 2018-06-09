@@ -19,7 +19,11 @@ namespace ImageServiceWeb.Commands
         public void Execute(string args)
         {
             this.m.configuration.Handlers.Remove(args);
-            this.m.waitingThread.Interrupt();
+            if (String.Equals(this.m.handler, args))
+            {
+                this.m.handler = null;
+                this.m.waitingThread.Interrupt();
+            }            
         }
     }
 }

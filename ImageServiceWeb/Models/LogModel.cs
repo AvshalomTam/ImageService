@@ -11,7 +11,7 @@ namespace ImageServiceWeb.Models
 {
     public class LogModel : CommandsExecuter
     {
-        private List<Logs> logs;
+        public List<Logs> logs { get; set; }
         
         public LogModel()
         {
@@ -27,21 +27,6 @@ namespace ImageServiceWeb.Models
 
             // get all the old logs
             CommunicationSingleton.Instance.writeToService(new CommandMessage((int)CommandEnum.LogCommand).toJson());            
-        }
-
-        public List<Logs> getList(string type = "")
-        {
-            if (string.Equals(type, ""))
-                return logs;
-
-            List <Logs> filtered = new List<Logs>();
-            foreach (Logs l in logs)
-            {
-                if (string.Equals(l.Type, type))
-                    filtered.Add(l);
-            }
-            
-            return filtered;
         }
     }
 }

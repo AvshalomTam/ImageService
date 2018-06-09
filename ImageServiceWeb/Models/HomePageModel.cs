@@ -29,7 +29,7 @@ namespace ImageServiceWeb.Models
             {
                 try
                 {
-                    return Directory.GetFiles(this.configuration.OutputDir, "*.*", SearchOption.AllDirectories).Length / 2;
+                    return Directory.GetFiles(this.configuration.OutputDir + @"\Thumbnails", "*.*", SearchOption.AllDirectories).Length;
                 }
                 catch
                 {

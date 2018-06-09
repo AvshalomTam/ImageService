@@ -4,17 +4,19 @@
     ViewBag.Title = "Logs";
 }
 
+<style>
+    #type {
+        width: 30%;
+    }
+</style>
+
 <h2>Logs</h2>
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<input type="text" id="type" class="dropbtn" placeholder="Enter type..." />
+<button type="button" onclick="myFunction()" class="btn btn-default"><i class="fa fa-search"></i></button>
 
-    <input type="text" name="type" size="5" />
-    <input type="submit" value="filter" class="btn btn-default">
-}
-
-<table class="table">
+<table class="table" id="myTable">
     <tr>
         <th width="40">
             @Html.DisplayNameFor(model => model.Type)
@@ -36,3 +38,25 @@
         </tr>
     }
 </table>
+
+<script>
+    function myFunction() {
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("type");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                var type = td.innerHTML.toUpperCase();
+                var n = type.includes(filter);
+                if (n == true) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }    
+</script>

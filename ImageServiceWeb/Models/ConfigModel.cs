@@ -15,9 +15,12 @@ namespace ImageServiceWeb.Models
     {
         public Config configuration { get; set; }
         public Thread waitingThread;
+        public bool isSleeping;
+        public string handler { get; set; }
         
         public ConfigModel()
         {
+            this.handler = null;
             this.waitingThread = Thread.CurrentThread;
             this.configuration = new Config();
             this.commandDictionary = new Dictionary<int, IServiceCommands>()
@@ -35,9 +38,10 @@ namespace ImageServiceWeb.Models
         public void RemoveHandler(string handler)
         {
             CommunicationSingleton.Instance.writeToService(new CommandMessage((int)CommandEnum.CloseCommand, handler).toJson());
-            this.waitingThread = Thread.CurrentThread;
             try
             {
+                this.waitingThread = Thread.CurrentThread;
+                this.handler = handler;
                 Thread.Sleep(-1);
             }
             catch { }

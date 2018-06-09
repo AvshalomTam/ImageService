@@ -37,13 +37,7 @@ namespace ImageServiceWeb.Controllers
         [HttpGet]
         public ActionResult LogsView()
         {
-            return View(l_model.getList());
-        }
-
-        [HttpPost]
-        public ActionResult LogsView(string type)
-        {
-            return View(l_model.getList(type));
+            return View(l_model.logs);
         }
 
         [HttpGet]
