@@ -29,7 +29,7 @@
     @foreach (var item in Model.Reverse())
     {
         <tr>
-            <td>
+            <td id="t">
                 @Html.DisplayFor(modelItem => item.Type)
             </td>
             <td>
@@ -41,22 +41,23 @@
 
 <script>
     function myFunction() {
-        var input, filter, table, tr, td, i;
+        var input, filter, table, tr, td, i, e;
         input = document.getElementById("type");
         filter = input.value.toUpperCase();
         table = document.getElementById("myTable");
         tr = table.getElementsByTagName("tr");
+        e = filter.localeCompare("");
         for (i = 0; i < tr.length; i++) {
             td = tr[i].getElementsByTagName("td")[0];
             if (td) {
-                var type = td.innerHTML.toUpperCase();
-                var n = type.includes(filter);
-                if (n == true) {
+                var type = td.innerHTML.toUpperCase().trim();
+                var n = type.localeCompare(filter);
+                if (n == 0 || e == 0) {
                     tr[i].style.display = "";
                 } else {
                     tr[i].style.display = "none";
                 }
             }
         }
-    }    
+    }
 </script>
