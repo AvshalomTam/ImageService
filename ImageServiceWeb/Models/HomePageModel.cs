@@ -45,7 +45,7 @@ namespace ImageServiceWeb.Models
             this.configuration = configuration;
 
             this.students = StudentModel.GetStudentList(@"App_Data/StudentsConfig.xml");
-            this.status = "Waiting for connection...";
+            this.status = "Establishing connection...";
 
             // in order to get messages
             CommunicationSingleton.Instance.msgReceived += OnDataReceived;

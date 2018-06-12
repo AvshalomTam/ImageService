@@ -19,9 +19,11 @@ namespace ImageServiceWeb.Communication
         private BinaryWriter writer;
         private BinaryReader reader;
         private TcpClient client = null;
-
+        public bool HasConnection { get; set; }
+        
         private CommunicationSingleton()
         {
+            HasConnection = false;
             connectToService();
         }
 
@@ -53,6 +55,7 @@ namespace ImageServiceWeb.Communication
             }
             catch
             {
+                closeService();
                 return -1;
             }
             this.stream = client.GetStream();
@@ -65,6 +68,7 @@ namespace ImageServiceWeb.Communication
                 readFromService();
             });
             task.Start();
+            HasConnection = true;
             return 0;
         }
 
@@ -98,7 +102,14 @@ namespace ImageServiceWeb.Communication
         /// <param name="message">The message.</param>
         public void writeToService(string message)
         {
-            this.writer.Write(message);
+            try
+            {
+                this.writer.Write(message);
+            }
+            catch
+            {
+                closeService();
+            }
         }
 
         /// <summary>
@@ -125,6 +136,7 @@ namespace ImageServiceWeb.Communication
 
         public void closeService()
         {
+            HasConnection = false;
             this.client?.Close();
         }
     }

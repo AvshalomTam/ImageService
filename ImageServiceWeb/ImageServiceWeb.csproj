@@ -184,6 +184,7 @@
     <Content Include="Views\Web\RemoveHandlerView.cshtml" />
     <Content Include="Views\Web\DeletePicView.cshtml" />
     <Content Include="Views\Web\PicView.cshtml" />
+    <Content Include="Views\Web\NoConnection.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

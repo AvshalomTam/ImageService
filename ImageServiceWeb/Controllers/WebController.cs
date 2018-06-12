@@ -21,6 +21,7 @@ namespace ImageServiceWeb.Controllers
         [HttpGet]
         public ActionResult HomePage()
         {
+            HasConnection();
             return View(h_model.students);
         }
 
@@ -37,24 +38,28 @@ namespace ImageServiceWeb.Controllers
         [HttpGet]
         public ActionResult LogsView()
         {
+            if (!HasConnection()) { return RedirectToAction("NoConnection"); }
             return View(l_model.logs);
         }
 
         [HttpGet]
         public ActionResult ConfigView()
         {
+            if (!HasConnection()) { return RedirectToAction("NoConnection"); }
             return View(c_model.configuration);
         }
 
         [HttpPost]
         public ActionResult ConfigView(string item)
         {
+            if (!HasConnection()) { return RedirectToAction("NoConnection"); }
             return RedirectToAction("RemoveHandlerView", new { item });
         }
 
         [HttpGet]
         public ActionResult RemoveHandlerView(string item)
         {
+            if (!HasConnection()) { return RedirectToAction("NoConnection"); }
             ViewBag.handler = item;
             return View();
         }
@@ -62,18 +67,20 @@ namespace ImageServiceWeb.Controllers
         [HttpPost]
         public void RemoveHandler(string name)
         {
-            c_model.RemoveHandler(name);                       
+            c_model.RemoveHandler(name);
         }
 
         [HttpGet]
         public ActionResult PhotosView()
         {
+            if (!HasConnection()) { return RedirectToAction("NoConnection"); }
             return View(p_model.PhotoList);
         }
 
         [HttpPost]
         public ActionResult DeletePicView(string path)
         {
+            if (!HasConnection()) { return RedirectToAction("NoConnection"); }
             return View(new Photo(path));
         }
 
@@ -88,7 +95,30 @@ namespace ImageServiceWeb.Controllers
         [HttpPost]
         public ActionResult PicView(string path)
         {
+            if (!HasConnection()) { return RedirectToAction("NoConnection"); }
             return View(new Photo(path));
+        }
+
+        public ActionResult NoConnection()
+        {
+            return View();
+        }
+
+        public bool HasConnection()
+        {
+            if (CommunicationSingleton.Instance.HasConnection) { return true; }
+
+            // no connection
+            if (CommunicationSingleton.Instance.connectToService() == 0)
+            {
+                // reproduce the (static) models
+                l_model = new LogModel();
+                c_model = new ConfigModel();
+                h_model = new HomePageModel(c_model.configuration);
+                p_model = new PhotosModel(c_model.configuration);
+                return true;
+            }
+            else { return false; }
         }
     }
 }
