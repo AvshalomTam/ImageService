@@ -2,10 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.simchegutfreund.imageserviceapp">
 
-    <Service
-        android:name=".ImageServiceService"
-        android:exported="false" />
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -26,8 +22,7 @@
 
         <service
             android:name=".ImageServiceService"
-            android:enabled="true"
-            android:exported="true"></service>
+            android:exported="false"></service>
     </application>
 
 </manifest>

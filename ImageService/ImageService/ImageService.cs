@@ -53,6 +53,7 @@ namespace ImageService.ImageService
         private ConfigManager manager;
         private ILoggingService logger;
         private TcpServer tcpServer;
+        private TcpApp tcpApp;
         private IClientHandler handler;
         private StatusUpdater s_updater;
 
@@ -146,7 +147,13 @@ namespace ImageService.ImageService
 
             s_updater.statusUpdate += handler.Broadcast;
             
-            s_updater.OnStatus("Service started");   
+            s_updater.OnStatus("Service started");
+
+            #region creating tcp server for app communication
+            AppHandler app_handler = new AppHandler(manager.Handlers[0], logger);
+            this.tcpApp = new TcpApp(app_handler, logger);
+            this.tcpApp.start();
+            #endregion
         }
 
         protected override void OnPause()
@@ -183,6 +190,8 @@ namespace ImageService.ImageService
             logger.Log("Service stopped", MessageTypeEnum.INFO);
             s_updater.OnStatus("Service stopped");
             this.handler.CloseClients();
+            this.tcpServer.Stop();
+            this.tcpApp.Stop();
 
             // Update the service state to Stop Pending.  
             ServiceStatus serviceStatus = new ServiceStatus();
