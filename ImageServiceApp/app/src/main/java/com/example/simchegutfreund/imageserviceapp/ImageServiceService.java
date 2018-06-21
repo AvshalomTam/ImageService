@@ -25,13 +25,17 @@ import android.widget.Toast;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public class ImageServiceService extends Service {
     public BroadcastReceiver receiver;
@@ -68,27 +72,26 @@ public class ImageServiceService extends Service {
             return;
         }
 
-        final File[] pics = dcim.listFiles();
+        final List<File> pics = getFileNames(dcim);
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         final int notify_id = 1;
         final NotificationManager NM = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         builder.setSmallIcon(R.drawable.ic_launcher_background);
         builder.setContentTitle("Transfer status...");
-        builder.setContentText("Transfer in progress...");
 
-        int count = 0;
         if (pics != null) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        InetAddress serverAddr = InetAddress.getByName("10.0.0.9");
+                        InetAddress serverAddr = InetAddress.getByName("10.0.0.1");
 
                         try {
                             int progress = 0;
 
                             for (File pic : pics) {
+                                builder.setContentText("Transfer in progress... " + Integer.toString(progress) + "%");
                                 builder.setProgress(100, progress, false);
                                 NM.notify(notify_id, builder.build());
 
@@ -118,7 +121,7 @@ public class ImageServiceService extends Service {
                                 outputStream.flush();
                                 socket.close();
 
-                                progress += 100 / pics.length;
+                                progress += 100 / pics.size();
                                 Thread.sleep(2*1000);
                             }
 
@@ -181,5 +184,25 @@ public class ImageServiceService extends Service {
                 padded[i] = array[j];
         }
         return padded;
+    }
+
+    private List<File> getFileNames(File dir) {
+        List<File> files = new ArrayList<File>();
+        if (dir.isFile()) {
+            files.add(dir);
+            return files;
+        }
+        if (dir.isDirectory()) {
+            for (File f : dir.listFiles()) {
+                if (f.isFile()) {
+                    files.add(f);
+                    continue;
+                }
+                if (f.isDirectory()) {
+                    files.addAll(getFileNames(f));
+                }
+            }
+        }
+        return files;
     }
 }

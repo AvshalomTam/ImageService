@@ -27,9 +27,9 @@ namespace ImageService.Communication
             string IP = ConfigurationManager.AppSettings["IP"];
             int port;
             if (!Int32.TryParse(ConfigurationManager.AppSettings["app_port"], out port))
-                port = 7777;
+                port = 45267;
             //IPEndPoint ep = new IPEndPoint(IPAddress.Parse(IP), port);
-            IPEndPoint ep = new IPEndPoint(IPAddress.Any, 45267);
+            IPEndPoint ep = new IPEndPoint(IPAddress.Any, port);
             listener = new TcpListener(ep);
 
             listener.Start();
