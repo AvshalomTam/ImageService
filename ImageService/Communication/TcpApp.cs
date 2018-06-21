@@ -40,7 +40,6 @@ namespace ImageService.Communication
                     try
                     {
                         TcpClient client = listener.AcceptTcpClient();
-                        logger.Log("Client accepted", Logging.Modal.MessageTypeEnum.INFO);
                         handler.HandleClient(client);
                     }
                     catch (SocketException)

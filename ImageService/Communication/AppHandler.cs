@@ -23,57 +23,49 @@ namespace ImageService.Communication
 
         public void HandleClient(TcpClient tcpClient)
         {
-            logger.Log("Handling client", Logging.Modal.MessageTypeEnum.INFO);
             try
             {
-                NetworkStream stream = tcpClient.GetStream();
+                BinaryReader r = new BinaryReader(tcpClient.GetStream());
                 new Task(() =>
                 {
-                    byte[] size = new byte[4];
-                    
-                    // getting the name of the pic
-                    stream.Read(size, 0, size.Length);
-                    Array.Reverse(size);
-                    int i = BitConverter.ToInt32(size, 0);
-                    byte[] b_name = new byte[i];
-                    stream.Read(b_name, 0, i);
-                    string name = Encoding.ASCII.GetString(b_name);
-                    logger.Log(i.ToString() + " " + name, Logging.Modal.MessageTypeEnum.INFO);
-
-                    // getting the pic itself
-                    size = new byte[4];
-                    stream.Read(size, 0, size.Length);
-                    Array.Reverse(size);
-                    i = BitConverter.ToInt32(size, 0);                
-                    byte[] pic = new byte[i];
-                    logger.Log(i.ToString(), Logging.Modal.MessageTypeEnum.INFO);
-                    int count = 0;
-
-                    do
+                    while (true)
                     {
-                        count += stream.Read(pic, count, i);
+                        byte[] size;
+
+                        // getting the name of the pic
+                        size = r.ReadBytes(4); // reading the length
+                        if (BitConverter.IsLittleEndian)
+                            Array.Reverse(size);    // reversing cause of the endianess
+                        int i = BitConverter.ToInt32(size, 0);
+                        byte[] b_name = r.ReadBytes(i);
+                        string name = Encoding.ASCII.GetString(b_name);
+
+                        // getting the pic itself
+                        size = r.ReadBytes(4); // reading the length
+                        if (BitConverter.IsLittleEndian)
+                            Array.Reverse(size);    // reversing cause of the endianess
+                        i = BitConverter.ToInt32(size, 0);
+
+                        byte[] b_pic = r.ReadBytes(i);
+                        TransferPic(b_pic, name);
+                        tcpClient.Close();
                     }
-                    while (count < i);
-                    logger.Log(i.ToString() + " " + pic.ToString(), Logging.Modal.MessageTypeEnum.INFO);
-
-                    //TransferPic(pic);
-                    tcpClient.Close();
-
                 }).Start();
             }
-            catch (Exception) { }            
+            catch (Exception)
+            {
+                //logger.Log("client disconnected", Logging.Modal.MessageTypeEnum.INFO);
+                //tcpClient.Close();
+            }            
         }
 
-        private void TransferPic(byte[] pic)
+        private void TransferPic(byte[] pic, string name)
         {
-            using (var ms = new MemoryStream(pic))
-            {
-                using (Image img = Image.FromStream(ms))
-                {
-                    string path = this.output + "//" + img.GetPropertyItem(269).Value;
-                    img.Save(path);
-                }
-            }
+            string path = this.output + "\\" + name;
+            MemoryStream ms = new MemoryStream(pic);
+            Bitmap bm = new Bitmap(ms);
+            bm.Save(path);
+            bm.Dispose();                
         }
     }
 }

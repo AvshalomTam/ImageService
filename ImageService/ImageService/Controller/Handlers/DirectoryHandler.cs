@@ -48,7 +48,7 @@ namespace ImageService.Controller.Handlers
         {
             m_path = dirPath;
 
-            foreach (string extension in new string [] { "*.jpg", "*.png", "*.gif", "*.bmp"})
+            foreach (string extension in new string [] { "*.jpg", "*.png", "*.gif", "*.bmp", "*.jpeg"})
             {
                 FileSystemWatcher watcher = new FileSystemWatcher(m_path, extension);
                 watcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName;
@@ -60,6 +60,7 @@ namespace ImageService.Controller.Handlers
 
         private void OnCreated(object sender, FileSystemEventArgs e)
         {
+            //Thread.Sleep(1000);
             string msg = m_controller.ExecuteCommand((int)CommandEnum.NewFileCommand, new string[] { e.FullPath }, out bool resultSuccesful);
 
             //checking wether execution was succesfull

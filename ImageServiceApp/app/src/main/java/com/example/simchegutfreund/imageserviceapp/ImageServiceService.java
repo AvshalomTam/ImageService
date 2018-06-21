@@ -56,7 +56,7 @@ public class ImageServiceService extends Service {
 
     private byte[] getBytesFromBitmap(Bitmap bm) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.PNG, 70, stream);
+        bm.compress(Bitmap.CompressFormat.JPEG, 70, stream);
         return stream.toByteArray();
     }
 
@@ -70,16 +70,12 @@ public class ImageServiceService extends Service {
 
         final File[] pics = dcim.listFiles();
 
-        /*final int NI = 1;
-        NotificationChannel NC = new NotificationChannel("default", "default", NotificationManager.IMPORTANCE_DEFAULT);
-        final NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "default")
-                .setSmallIcon(R.drawable.ic_launcher_foreground).setContentTitle("BackUp The Pics").setPriority(NotificationCompat.PRIORITY_DEFAULT);
-        final NotificationManager notificationManager = (NotificationManager) getSystemService(context.NOTIFICATION_SERVICE);
-        notificationManager.createNotificationChannel(NC);
-        builder.setProgress(100, 0,false);
-
-        builder.setContentTitle("Picture Transfer").setContentText("Transfer in progress").setPriority(NotificationCompat.PRIORITY_LOW);
-        notificationManager.notify(10, builder.build());*/
+        final NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+        final int notify_id = 1;
+        final NotificationManager NM = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        builder.setSmallIcon(R.drawable.ic_launcher_background);
+        builder.setContentTitle("Transfer status...");
+        builder.setContentText("Transfer in progress...");
 
         int count = 0;
         if (pics != null) {
@@ -87,13 +83,20 @@ public class ImageServiceService extends Service {
                 @Override
                 public void run() {
                     try {
-                        InetAddress serverAddr = InetAddress.getByName("172.18.28.177");
+                        InetAddress serverAddr = InetAddress.getByName("10.0.0.9");
+
                         try {
-                            int bar = 0;
+                            int progress = 0;
+
                             for (File pic : pics) {
+                                builder.setProgress(100, progress, false);
+                                NM.notify(notify_id, builder.build());
+
                                 Socket socket = new Socket(serverAddr, 45267);
                                 OutputStream outputStream = socket.getOutputStream();
+                                InputStream inputStream = socket.getInputStream();
                                 Log.e("TCP", "YES!");
+
                                 Log.e("path", pic.toString());
 
                                 // sending name of pic
@@ -113,16 +116,15 @@ public class ImageServiceService extends Service {
                                 outputStream.flush();
                                 outputStream.write(img);
                                 outputStream.flush();
-
-                                bar = bar + 100 / pics.length;
-                                // builder.setProgress(100, bar, false);
-                                // notificationManager.notify(10, builder.build());
                                 socket.close();
-                                break;
+
+                                progress += 100 / pics.length;
+                                Thread.sleep(2*1000);
                             }
-                            // builder.setProgress(0,0, false);
-                            // builder.setContentText("Transfer complete");
-                            // notificationManager.notify(10, builder.build());
+
+                            builder.setProgress(0,0, false);
+                            builder.setContentText("Transfer Complete...");
+                            NM.notify(notify_id, builder.build());
                         } catch (Exception e) {
                             Log.e("TCP", "S: Error", e);
                         }
@@ -132,6 +134,10 @@ public class ImageServiceService extends Service {
                 }
             }).start();
         }
+    }
+
+    public void setProgress(int progress) {
+
     }
 
     public int onStartCommand(Intent intent, int flag, int startId) {
