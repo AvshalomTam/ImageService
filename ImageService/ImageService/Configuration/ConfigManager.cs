@@ -1,4 +1,5 @@
-﻿using ImageService.Infrastructure.Enums;
+﻿using ImageService.Communication;
+using ImageService.Infrastructure.Enums;
 using ImageService.Modal.Event;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -6,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,6 +20,10 @@ namespace ImageService.ImageService.Configuration
         public string SourceName { get; set; }
         public string LogName { get; set; }
         public int ThumbnailSize { get; set; }
+        public IPAddress c_ip { get; set; }
+        public int c_port { get; set; }
+        public IPAddress app_ip { get; set; }
+        public int app_port { get; set; }
 
         public ConfigManager()
         {
@@ -30,7 +36,15 @@ namespace ImageService.ImageService.Configuration
             if (Int32.TryParse(ConfigurationManager.AppSettings["ThumbnailSize"], out int thumbnailSize))
                 this.ThumbnailSize = thumbnailSize;
             else
-                this.ThumbnailSize = 120;            
+                this.ThumbnailSize = 120;
+            this.c_ip = IPAddress.Parse(ConfigurationManager.AppSettings["IP"]);
+            if (!Int32.TryParse(ConfigurationManager.AppSettings["port"], out int port))
+                port = 8080;
+            this.c_port = port;
+            this.app_ip = IPAddress.Any;
+            if (!Int32.TryParse(ConfigurationManager.AppSettings["app_port"], out port))
+                port = 45267;
+            this.app_port = port;
         }
 
         /// <summary>
@@ -62,5 +76,19 @@ namespace ImageService.ImageService.Configuration
             obj["arguments"] = obj2.ToString();
             return obj.ToString();
         }
+
+        public IPAddress GetIp(ServerEnum server)
+        {
+            if (server == ServerEnum.UIServer)
+                return this.c_ip;
+            return this.app_ip;
+        }
+
+        public int GetPort(ServerEnum server)
+        {
+            if (server == ServerEnum.UIServer)
+                return this.c_port;
+            return this.app_port;            
+        }        
     }
 }

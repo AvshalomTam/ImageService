@@ -8,8 +8,10 @@ using System.Threading.Tasks;
 
 namespace ImageService.Communication
 {
-    interface IClientHandler
+    interface IClientManager : IClientHandler
     {
-        void HandleClient(TcpClient client);        
+        void Broadcast(object sender, TransferEventArgs args);
+        void CloseClients();
+        void RemoveClient(Client client);
     }
 }

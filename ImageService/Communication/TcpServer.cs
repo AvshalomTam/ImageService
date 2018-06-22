@@ -1,4 +1,5 @@
 ﻿using ImageService.Controller;
+using ImageService.ImageService.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -15,10 +16,14 @@ namespace ImageService.Communication
     {
         private TcpListener listener;
         private IClientHandler handler;
+        private ConfigManager CM;
+        private ServerEnum server;
 
-        public TcpServer(IClientHandler handler)
+        public TcpServer(IClientHandler handler, ConfigManager manager, ServerEnum server)
         {
             this.handler = handler;
+            this.CM = manager;
+            this.server = server;
         }
 
         /// <summary>
@@ -26,11 +31,7 @@ namespace ImageService.Communication
         /// </summary>
         public void Start()
         {
-            string IP = ConfigurationManager.AppSettings["IP"];
-            int port;
-            if (!Int32.TryParse(ConfigurationManager.AppSettings["port"], out port))
-                port = 8080;
-            IPEndPoint ep = new IPEndPoint(IPAddress.Parse(IP), port);
+            IPEndPoint ep = new IPEndPoint(this.CM.GetIp(this.server), this.CM.GetPort(this.server));
             listener = new TcpListener(ep);
 
             listener.Start();

@@ -53,8 +53,8 @@ namespace ImageService.ImageService
         private ConfigManager manager;
         private ILoggingService logger;
         private TcpServer tcpServer;
-        private TcpApp tcpApp;
-        private IClientHandler handler;
+        private TcpServer tcpApp;
+        private IClientManager handler;
         private StatusUpdater s_updater;
 
         public ImageService()
@@ -127,9 +127,9 @@ namespace ImageService.ImageService
             commands[(int)CommandEnum.ConfigCommand] = new DataCommand(manager);
             commands[(int)CommandEnum.StatusCommand] = new DataCommand(s_updater);
             commands[(int)CommandEnum.CloseCommand] = new RemoveHandlerCommand(m_server);
-            this.handler = new ClientHandler(commands);
+            this.handler = new ClientManager(commands);
             #endregion
-
+            
             #region creating two classes who are notified of new logs and change in settings
             LogUpdater l_updater = new LogUpdater();
             logger.MessageReceived += l_updater.OnLog;
@@ -140,7 +140,7 @@ namespace ImageService.ImageService
             #endregion
 
             #region creating the TCP server
-            this.tcpServer = new TcpServer(handler);
+            this.tcpServer = new TcpServer(handler, this.manager, ServerEnum.UIServer);
             // starting to wait for client connections
             tcpServer.Start();
             #endregion
@@ -148,11 +148,11 @@ namespace ImageService.ImageService
             s_updater.statusUpdate += handler.Broadcast;
             
             s_updater.OnStatus("Service started");
-
+            
             #region creating tcp server for app communication
             AppHandler app_handler = new AppHandler(manager.Handlers[0], logger);
-            this.tcpApp = new TcpApp(app_handler, logger);
-            this.tcpApp.start();
+            this.tcpApp = new TcpServer(app_handler, this.manager, ServerEnum.AppServer);
+            this.tcpApp.Start();
             #endregion
         }
 

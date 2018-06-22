@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ImageService.Communication
 {
-    class AppHandler
+    class AppHandler : IClientHandler
     {
         private string output;
         private ILoggingService logger;

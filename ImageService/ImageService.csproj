@@ -64,10 +64,11 @@
     <Compile Include="Communication\Client.cs" />
     <Compile Include="Communication\Commands\DataCommand.cs" />
     <Compile Include="Communication\IClientHandler.cs" />
-    <Compile Include="Communication\ClientHandler.cs" />
+    <Compile Include="Communication\ClientManager.cs" />
     <Compile Include="Communication\Commands\IHandlerCommand.cs" />
     <Compile Include="Communication\Commands\RemoveHandlerCommand.cs" />
-    <Compile Include="Communication\TcpApp.cs" />
+    <Compile Include="Communication\IClientManager.cs" />
+    <Compile Include="Communication\ServerEnum.cs" />
     <Compile Include="Communication\TcpServer.cs" />
     <Compile Include="ImageService\Configuration\ConfigManager.cs" />
     <Compile Include="Infrastructure\Enums\CommandEnum.cs" />

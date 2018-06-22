@@ -16,13 +16,13 @@ using System.Threading.Tasks;
 
 namespace ImageService.Communication
 {
-    class ClientHandler : IClientHandler
+    class ClientManager : IClientManager
     {
         private Dictionary<int, IHandlerCommand> commands;
         private List<Client> clients;
         private Object thisLock = new Object();
 
-        public ClientHandler(Dictionary<int, IHandlerCommand> commands)
+        public ClientManager(Dictionary<int, IHandlerCommand> commands)
         {
             this.commands = commands;
             clients = new List<Client>();
