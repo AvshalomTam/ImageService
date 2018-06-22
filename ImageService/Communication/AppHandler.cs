@@ -52,11 +52,7 @@ namespace ImageService.Communication
                     }
                 }).Start();
             }
-            catch (Exception)
-            {
-                //logger.Log("client disconnected", Logging.Modal.MessageTypeEnum.INFO);
-                //tcpClient.Close();
-            }            
+            catch (Exception) { }                        
         }
 
         private void TransferPic(byte[] pic, string name)

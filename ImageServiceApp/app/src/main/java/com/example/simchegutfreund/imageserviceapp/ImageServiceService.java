@@ -85,7 +85,7 @@ public class ImageServiceService extends Service {
                 @Override
                 public void run() {
                     try {
-                        InetAddress serverAddr = InetAddress.getByName("10.0.0.1");
+                        InetAddress serverAddr = InetAddress.getByName("10.0.0.4");
 
                         try {
                             int progress = 0;
@@ -122,7 +122,7 @@ public class ImageServiceService extends Service {
                                 socket.close();
 
                                 progress += 100 / pics.size();
-                                Thread.sleep(2*1000);
+                                // Thread.sleep(2*1000);
                             }
 
                             builder.setProgress(0,0, false);
@@ -168,6 +168,7 @@ public class ImageServiceService extends Service {
 
     public void onDestroy() {
         Toast.makeText(this, "Service ending...", Toast.LENGTH_SHORT).show();
+        unregisterReceiver(this.receiver);
     }
 
     public byte[] padding(byte[] array) {
