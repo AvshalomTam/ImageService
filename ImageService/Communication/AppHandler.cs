@@ -61,7 +61,8 @@ namespace ImageService.Communication
             MemoryStream ms = new MemoryStream(pic);
             Bitmap bm = new Bitmap(ms);
             bm.Save(path);
-            bm.Dispose();                
+            bm.Dispose();
+            ms.Dispose();
         }
     }
 }

@@ -60,7 +60,7 @@ namespace ImageService.Controller.Handlers
 
         private void OnCreated(object sender, FileSystemEventArgs e)
         {
-            //Thread.Sleep(1000);
+            Thread.Sleep(100);
             string msg = m_controller.ExecuteCommand((int)CommandEnum.NewFileCommand, new string[] { e.FullPath }, out bool resultSuccesful);
 
             //checking wether execution was succesfull

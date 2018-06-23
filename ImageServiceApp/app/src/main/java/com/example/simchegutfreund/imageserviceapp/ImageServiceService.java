@@ -85,7 +85,7 @@ public class ImageServiceService extends Service {
                 @Override
                 public void run() {
                     try {
-                        InetAddress serverAddr = InetAddress.getByName("10.0.0.4");
+                        InetAddress serverAddr = InetAddress.getByName("10.0.0.11");
 
                         try {
                             int progress = 0;
